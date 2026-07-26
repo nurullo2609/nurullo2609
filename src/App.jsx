@@ -29,41 +29,116 @@ const QIZIL_BAYROQLAR = {
   yopish_olasizmi: "Yopish «olasizmi?» shaklida (to'g'risi: «qaysi biri?»)",
 };
 
-const PRESETLAR = {
-  "Nasos B2B — Rustam aka": {
-    nisha: "Nasos savdosi (B2B, ishlab chiqarish korxonalari)",
-    ism: "Rustam aka",
-    oborot: "oyiga ~800 mln so'm",
-    marja: "15%",
-    ogriq: "Xitoy nasoslari tez ishdan chiqyapti, mijozlar qaytib shikoyat qilyapti",
-    oldingi_tajriba: "Bir marta reklama agentligi bilan ishlagan, natija chiqmagan, ishonchi susaygan",
-    qarshilik_darajasi: 7,
-    asosiy_etirozlar: ["Qimmat ekan", "Hozir byudjet yo'q", "Keyinroq gaplashaylik"],
-    yashirin_talab: "Aslida ishonchli, uzoq muddatli hamkor va real kafolat izlayapti",
-  },
-  "Santexnika do'koni — Dilshod": {
-    nisha: "Santexnika chakana do'koni",
-    ism: "Dilshod",
-    oborot: "oyiga ~120 mln so'm",
-    marja: "22%",
-    ogriq: "Do'konga odam kirmayapti, Instagram bor lekin sotuv yo'q",
-    oldingi_tajriba: "O'zi post qo'yib ko'rgan, hech nima chiqmagan",
-    qarshilik_darajasi: 5,
-    asosiy_etirozlar: ["Menga reklama kerak emas", "Odamlar o'zi kelaveradi", "Buni uddalay olaman"],
-    yashirin_talab: "Barqaror mijoz oqimi va tayyor tizim kerak, o'zi vaqt sarflashni xohlamaydi",
-  },
-  "Suv isitgich B2C — Nodira opa": {
-    nisha: "Elektr suv isitgich (bo'yler) chakana",
-    ism: "Nodira opa",
-    oborot: "oyiga ~60 mln so'm",
-    marja: "18%",
-    ogriq: "Raqobatchilar arzonroq narx qo'yyapti, mijoz narxni taqqoslab ketyapti",
-    oldingi_tajriba: "Hech qachon agentlik bilan ishlamagan, sxemani tushunmaydi",
-    qarshilik_darajasi: 8,
-    asosiy_etirozlar: ["Juda qimmat", "Ishlashiga ishonmayman", "Pulni qaytarasizmi?"],
-    yashirin_talab: "Xavfsizlik va kafolat kerak — «puldan ayrilmaslik» tuyg'usi asosiy",
-  },
+/* ---------- TASODIFIY MIJOZ generatori ---------- */
+
+const ISMLAR = [
+  "Rustam aka", "Dilshod aka", "Bekzod aka", "Sardor aka", "Jasur aka",
+  "Otabek aka", "Aziz aka", "Farrux aka", "Ulug'bek aka", "Sanjar aka",
+  "Shuhrat aka", "Alisher aka", "Nodira opa", "Gulnora opa", "Shahnoza opa",
+  "Kamola opa", "Malika opa", "Dilnoza opa", "Zuhra opa", "Feruza opa",
+];
+
+// Oborot diapazoni biznes turiga qarab
+const OBOROTLAR = {
+  B2B: ["oyiga ~500 mln so'm", "oyiga ~800 mln so'm", "oyiga ~1.2 mlrd so'm", "oyiga ~2 mlrd so'm"],
+  B2C: ["oyiga ~40 mln so'm", "oyiga ~60 mln so'm", "oyiga ~120 mln so'm", "oyiga ~200 mln so'm"],
+  B2G: ["yillik ~1.5 mlrd so'm shartnoma", "yillik ~3 mlrd so'm tender", "yillik ~5 mlrd so'm"],
 };
+
+const MARJALAR = ["12%", "15%", "18%", "22%", "25%", "30%"];
+
+const TAJRIBALAR = [
+  "Bir marta reklama agentligi bilan ishlagan, natija chiqmagan, ishonchi susaygan",
+  "O'zi post qo'yib ko'rgan, hech nima chiqmagan",
+  "Hech qachon agentlik bilan ishlamagan, sxemani tushunmaydi",
+  "Ilgari SMM'chi yollagan, pul ketgan, natija yo'q",
+  "Tanishi orqali ishlagan, yarim yo'lda tashlab ketishgan",
+  "Raqobatchisi agentlik bilan ishlab o'zib ketgan, shuni ko'rgan",
+];
+
+const ETIROZLAR_POOL = [
+  "Qimmat ekan", "Hozir byudjet yo'q", "Keyinroq gaplashaylik",
+  "Menga reklama kerak emas", "O'zim uddalayman", "Ishlashiga ishonmayman",
+  "Pulni qaytarasizmi?", "Natija kafolati bormi?", "Raqobatchilar arzonroq",
+  "O'ylab ko'ray", "Oldin ishlaganman, foyda bo'lmagan", "Menga vaqt yo'q",
+];
+
+const YASHIRIN_POOL = [
+  "Aslida ishonchli, uzoq muddatli hamkor va real kafolat izlayapti",
+  "Barqaror mijoz oqimi va tayyor tizim kerak, o'zi vaqt sarflashni xohlamaydi",
+  "Xavfsizlik va kafolat kerak — «puldan ayrilmaslik» tuyg'usi asosiy",
+  "Raqobatchidan o'zib ketishni xohlaydi, lekin buni ochiq aytmaydi",
+  "Jamoasiga «to'g'ri qaror qildim» deb isbotlashi kerak",
+  "Tez va'da emas, ishonchli, tushunadigan hamkor muhim",
+];
+
+// Biznes turlari: B2B / B2C / B2G aralash
+const BIZNESLAR = [
+  { nisha: "Nasos savdosi (ishlab chiqarish korxonalari)", tur: "B2B", ogriq: ["Xitoy nasoslari tez ishdan chiqyapti, mijozlar qaytib shikoyat qilyapti", "Yirik mijozlar raqobatchiga o'tib ketyapti", "Sotuv bo'limi lidlarni yopolmayapti"] },
+  { nisha: "Sanoat uskunalari yetkazib berish", tur: "B2B", ogriq: ["Yangi mijoz topish qiyinlashgan", "Katta shartnomalar cho'zilib ketyapti"] },
+  { nisha: "PPR va metal quvurlar ulgurji savdosi", tur: "B2B", ogriq: ["Doimiy mijozlar narx so'rab boshqadan olib ketyapti", "Ombor to'lgan, aylanma sekin"] },
+  { nisha: "Qurilish materiallari ulgurji", tur: "B2B", ogriq: ["Nasiya berib qarz ko'paygan", "Raqobat kuchli, narx bosimi bor"] },
+  { nisha: "Santexnika chakana do'koni", tur: "B2C", ogriq: ["Do'konga odam kirmayapti, Instagram bor lekin sotuv yo'q", "Onlayn buyurtma umuman yo'q"] },
+  { nisha: "Elektr suv isitgich (bo'yler) chakana", tur: "B2C", ogriq: ["Raqobatchilar arzonroq narx qo'yyapti, mijoz taqqoslab ketyapti", "Mavsumda sotuv tushib ketadi"] },
+  { nisha: "Konditsioner o'rnatish xizmati", tur: "B2C", ogriq: ["Mijozlar faqat mavsumda keladi, qishda ish yo'q", "Reklama pulini isrof qilgandek his qilyapti"] },
+  { nisha: "Dekorativ PVC panel chakana", tur: "B2C", ogriq: ["Mahsulotni odamlar tanimaydi, tushuntirish kerak", "Ustalar tavsiya qilmayapti"] },
+  { nisha: "Mebel saloni", tur: "B2C", ogriq: ["Salonga kelgan mijoz «o'ylab ko'raman» deb ketadi", "Lidlardan sotuv chiqmayapti"] },
+  { nisha: "Maktab va kasalxonalarga jihoz yetkazish (tender)", tur: "B2G", ogriq: ["Tenderlarda faqat narx bo'yicha yutqazyapti", "To'lovlar kechikadi, aylanma qotib qolyapti"] },
+  { nisha: "Kommunal obyektlarga nasos stansiyalari", tur: "B2G", ogriq: ["Loyihalar cho'ziladi, qaror sekin", "Bir necha bo'lim bilan kelishish kerak"] },
+  { nisha: "Davlat obyektlariga isitish tizimlari", tur: "B2G", ogriq: ["Byudjet cheklangan, narx bosim ostida", "Texnik talablar murakkab, hujjat ko'p"] },
+];
+
+function tanla(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// --- Analitika: hodisani serverga yuboradi (xatoni jim yutadi) ---
+function trackEvent(payload) {
+  try {
+    fetch("/api/track", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    });
+  } catch (e) {}
+}
+function segmentNishadan(nisha) {
+  const q = String(nisha || "").split("—");
+  return q.length > 1 ? q[q.length - 1].trim() : "";
+}
+
+function tasodifiySon(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function nechta(arr, n) {
+  const nusxa = [...arr];
+  const natija = [];
+  for (let i = 0; i < n && nusxa.length; i++) {
+    natija.push(nusxa.splice(Math.floor(Math.random() * nusxa.length), 1)[0]);
+  }
+  return natija;
+}
+
+// Ma'lum bir biznes uchun persona quradi (nisha aniq, qolgani tasodifiy)
+function personaFromBiz(biz) {
+  return {
+    nisha: `${biz.nisha} — ${biz.tur}`,
+    ism: tanla(ISMLAR),
+    oborot: tanla(OBOROTLAR[biz.tur]),
+    marja: tanla(MARJALAR),
+    ogriq: tanla(biz.ogriq),
+    oldingi_tajriba: tanla(TAJRIBALAR),
+    qarshilik_darajasi: tasodifiySon(4, 9),
+    asosiy_etirozlar: nechta(ETIROZLAR_POOL, 3),
+    yashirin_talab: tanla(YASHIRIN_POOL),
+  };
+}
+
+// To'liq tasodifiy mijoz (istalgan segment, istalgan mahsulot)
+function tasodifiyPersona() {
+  return personaFromBiz(tanla(BIZNESLAR));
+}
 
 function bo(role) {
   return role === "sotuvchi" ? "user" : "assistant";
@@ -142,12 +217,13 @@ Baholash real va halol bo'lsin — maqtov uchun ball qo'shma.`;
 /* ============================================================ */
 
 export default function SotuvTrenajyori() {
-  const [persona, setPersona] = useState(PRESETLAR["Nasos B2B — Rustam aka"]);
-  const [personaText, setPersonaText] = useState(
-    JSON.stringify(PRESETLAR["Nasos B2B — Rustam aka"], null, 2)
+  const [persona, setPersona] = useState(tasodifiyPersona);
+  const [personaText, setPersonaText] = useState(() =>
+    JSON.stringify(persona, null, 2)
   );
   const [personaXato, setPersonaXato] = useState("");
   const [personaOchiq, setPersonaOchiq] = useState(false);
+  const [segment, setSegment] = useState(null); // 'B2B' | 'B2C' | 'B2G'
 
   const [rejim, setRejim] = useState("ekspert"); // 'yordam' | 'ekspert'
   const [messages, setMessages] = useState([]); // {role:'sotuvchi'|'mijoz', text}
@@ -171,6 +247,8 @@ export default function SotuvTrenajyori() {
   const [mobil, setMobil] = useState("chat"); // 'chat'|'monitor' (kichik ekranlar uchun)
 
   const chatEnd = useRef(null);
+  const sidRef = useRef(Math.random().toString(36).slice(2, 10));
+  const trackedRef = useRef(false);
   useEffect(() => {
     chatEnd.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
@@ -191,15 +269,17 @@ export default function SotuvTrenajyori() {
     }
   }
 
-  function presetTanla(nom) {
-    const p = PRESETLAR[nom];
+  function bizTanla(biz) {
+    const p = personaFromBiz(biz);
     setPersona(p);
     setPersonaText(JSON.stringify(p, null, 2));
     setPersonaXato("");
+    yangiSuhbat();
   }
 
   function yangiSuhbat() {
     setMessages([]);
+    trackedRef.current = false;
     setEvals([]);
     setReachedStage(0);
     setCurStage(0);
@@ -209,6 +289,15 @@ export default function SotuvTrenajyori() {
     setTugadi(false);
     setReview(null);
     setXato("");
+  }
+
+  // Yangi tasodifiy mijoz + suhbatni tozalaydi
+  function yangiTasodifiy() {
+    const p = tasodifiyPersona();
+    setPersona(p);
+    setPersonaText(JSON.stringify(p, null, 2));
+    setPersonaXato("");
+    yangiSuhbat();
   }
 
   async function xabarYubor() {
@@ -224,6 +313,18 @@ export default function SotuvTrenajyori() {
     setMessages(yangi);
     setInput("");
     setLoading(true);
+
+    // Analitika: suhbatning birinchi xabarida bir marta yozib qo'yamiz
+    if (!trackedRef.current) {
+      trackedRef.current = true;
+      trackEvent({
+        event: "suhbat",
+        nisha: persona.nisha,
+        segment: segmentNishadan(persona.nisha),
+        rejim,
+        sid: sidRef.current,
+      });
+    }
 
     try {
       // 1-chaqiruv: MIJOZ javobi
@@ -369,6 +470,9 @@ export default function SotuvTrenajyori() {
               🔴 Ekspert
             </button>
           </div>
+          <button className="st-ghost st-ghost-random" onClick={yangiTasodifiy}>
+            🎲 Tasodifiy
+          </button>
           <button className="st-ghost" onClick={() => setPersonaOchiq((v) => !v)}>
             Persona
           </button>
@@ -557,13 +661,34 @@ export default function SotuvTrenajyori() {
               <span>MIJOZ PERSONASI</span>
               <button onClick={() => setPersonaOchiq(false)}>✕</button>
             </div>
+            <div className="st-seg-label">Tasodifiy yoki segment tanlang:</div>
             <div className="st-presets">
-              {Object.keys(PRESETLAR).map((nom) => (
-                <button key={nom} className="st-preset" onClick={() => presetTanla(nom)}>
-                  {nom}
+              <button className="st-preset st-preset-random" onClick={yangiTasodifiy}>
+                🎲 Tasodifiy
+              </button>
+              {["B2B", "B2C", "B2G"].map((t) => (
+                <button
+                  key={t}
+                  className={"st-preset " + (segment === t ? "on" : "")}
+                  onClick={() => setSegment(segment === t ? null : t)}
+                >
+                  {t}
                 </button>
               ))}
             </div>
+            {segment && (
+              <div className="st-presets st-presets-sub">
+                {BIZNESLAR.filter((b) => b.tur === segment).map((b) => (
+                  <button
+                    key={b.nisha}
+                    className="st-preset"
+                    onClick={() => bizTanla(b)}
+                  >
+                    {b.nisha}
+                  </button>
+                ))}
+              </div>
+            )}
             <textarea
               className="st-json"
               value={personaText}
@@ -803,6 +928,13 @@ const CSS = `
 .st-preset{border:1px solid var(--line);background:var(--paper);color:var(--txt);
   padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit;transition:.15s;}
 .st-preset:hover{border-color:var(--cyan);background:#fff;}
+.st-preset-random{background:var(--cyan);color:#04121b;border-color:var(--cyan);font-weight:600;}
+.st-preset-random:hover{filter:brightness(1.05);background:var(--cyan);}
+.st-preset.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600;}
+.st-presets-sub{margin-top:-6px;padding-left:2px;border-left:2px solid var(--cyan);padding-left:10px;}
+.st-seg-label{font-size:11px;letter-spacing:.06em;color:var(--txt-dim);font-weight:600;margin-bottom:8px;text-transform:uppercase;}
+.st-ghost-random{border-color:var(--cyan);color:var(--cyan);}
+.st-ghost-random:hover{background:rgba(0,175,239,.12);color:#fff;}
 .st-json{width:100%;min-height:340px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;
   line-height:1.6;border:1px solid var(--line);border-radius:11px;padding:14px;background:#0E1420;
   color:#c7e6f5;resize:vertical;}
