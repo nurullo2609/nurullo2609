@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# Frontend "/api/claude" -> serverless funksiya
+[[redirects]]
+  from = "/api/claude"
+  to = "/.netlify/functions/claude"
+  status = 200
+
+# SPA fallback (barcha yo'llar index.html ga)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
