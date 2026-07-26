@@ -1,8 +1,8 @@
-// Netlify Function — Anthropic API proksisi.
+// Netlify Function — Anthropic API proksisi (ES-modul uslubida).
 // API kaliti FAQAT shu yerda (server tomonda) yashaydi, frontendga chiqmaydi.
 // Frontend "/api/claude" ga murojaat qiladi (netlify.toml dagi redirect orqali).
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   // Faqat POST
   if (event.httpMethod !== "POST") {
     return json(405, { error: "Faqat POST so'rov qabul qilinadi." });
@@ -49,12 +49,15 @@ exports.handler = async (event) => {
 
     const data = await res.json();
     if (!res.ok) {
-      const detail = data && data.error && data.error.message ? data.error.message : "Anthropic API xatosi.";
+      const detail =
+        data && data.error && data.error.message
+          ? data.error.message
+          : "Anthropic API xatosi.";
       return json(res.status, { error: detail });
     }
     return json(200, data);
   } catch (e) {
-    return json(502, { error: "Serverga ulanishda muammo. Qaytadan urinib ko'ring." });
+    return json(502, { error: "Serverga ulanishda muammo: " + (e && e.message ? e.message : "noma'lum") });
   }
 };
 
