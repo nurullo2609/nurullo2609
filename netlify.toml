@@ -3,6 +3,12 @@
   publish = "dist"
   functions = "netlify/functions"
 
+# Funksiyalar Node 20 da ishlashi shart — global fetch shu versiyada bor.
+# NODE_VERSION build uchun, AWS_LAMBDA_JS_RUNTIME esa funksiya ish vaqti uchun.
+[build.environment]
+  NODE_VERSION = "20"
+  AWS_LAMBDA_JS_RUNTIME = "nodejs20.x"
+
 # Frontend "/api/claude" -> serverless funksiya
 [[redirects]]
   from = "/api/claude"
