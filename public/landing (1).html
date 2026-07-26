@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sotuv Trenajyori — Sotuvchilaringizni jonli AI-mijozda mashq qildiring | EcomAudit</title>
+<meta name="description" content="Zaif sotuvchi har oy pulingizni oqizadi. EcomAudit Sotuv Trenajyori — jonli AI-mijoz, 9 bosqich, jonli baholash. Qancha yo'qotayotganingizni hisoblang." />
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --ink:#0E1420; --ink-2:#151E2E; --ink-3:#1E293B;
+  --paper:#F4F6F9; --card:#FFFFFF;
+  --cyan:#00AFEF; --gold:#FFBA37; --red:#FF4D4D; --green:#2FBF71;
+  --txt:#0E1420; --txt-dim:#5B6675; --txt-inv:#E6ECF5; --txt-inv-dim:#8A99B0;
+  --line:rgba(148,163,184,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Space Grotesk',system-ui,sans-serif;color:var(--txt);background:var(--paper);line-height:1.5;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1100px;margin:0 auto;padding:0 22px;}
+a{text-decoration:none;color:inherit;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:20;background:rgba(14,20,32,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(0,175,239,.2);color:var(--txt-inv);}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.1em;font-size:14px;}
+.logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(47,191,113,.18);}
+.btn{display:inline-block;border:0;cursor:pointer;font-family:inherit;font-weight:600;border-radius:10px;
+  padding:12px 20px;font-size:14.5px;transition:.15s;text-align:center;}
+.btn-cyan{background:var(--cyan);color:#04121b;}
+.btn-cyan:hover{filter:brightness(1.06);transform:translateY(-1px);}
+.btn-nav{padding:9px 16px;font-size:13.5px;}
+.btn-ghost{background:transparent;border:1px solid var(--cyan);color:var(--cyan);}
+.btn-ghost:hover{background:rgba(0,175,239,.12);}
+
+/* HERO */
+header.hero{background:radial-gradient(1200px 500px at 70% -10%, rgba(0,175,239,.18), transparent),
+  var(--ink);color:var(--txt-inv);padding:74px 0 84px;}
+.badge{display:inline-block;font-size:12px;letter-spacing:.1em;font-weight:600;color:var(--gold);
+  border:1px solid rgba(255,186,55,.5);border-radius:30px;padding:6px 15px;margin-bottom:22px;}
+h1{font-size:clamp(30px,5.2vw,52px);line-height:1.08;font-weight:700;letter-spacing:-.01em;max-width:15ch;}
+h1 .hl{color:var(--cyan);}
+.lead{font-size:clamp(16px,2.2vw,19px);color:var(--txt-inv-dim);margin:22px 0 30px;max-width:52ch;line-height:1.6;}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.hero-trust{margin-top:22px;font-size:13.5px;color:var(--txt-inv-dim);display:flex;gap:8px;align-items:center;}
+.hero-trust b{color:var(--txt-inv);}
+
+section{padding:64px 0;}
+.eyebrow{font-size:12px;letter-spacing:.14em;font-weight:600;color:var(--cyan);text-transform:uppercase;margin-bottom:12px;}
+h2{font-size:clamp(24px,3.6vw,34px);line-height:1.15;font-weight:700;letter-spacing:-.01em;max-width:20ch;}
+.section-sub{color:var(--txt-dim);font-size:16px;margin-top:12px;max-width:56ch;}
+
+/* PROBLEM stat */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;}
+.stat .n{font-family:'IBM Plex Mono',monospace;font-size:34px;font-weight:600;color:var(--ink);}
+.stat .n.red{color:var(--red);} .stat .n.cyan{color:var(--cyan);}
+.stat .t{font-size:14px;color:var(--txt-dim);margin-top:6px;line-height:1.45;}
+
+/* CALCULATOR */
+.calc-sec{background:var(--ink);color:var(--txt-inv);}
+.calc-sec .eyebrow{color:var(--gold);}
+.calc-sec h2{color:#fff;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:34px;align-items:stretch;}
+.calc-inputs{background:var(--ink-2);border:1px solid rgba(148,163,184,.14);border-radius:18px;padding:26px;}
+.field{margin-bottom:18px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:13.5px;color:var(--txt-inv-dim);margin-bottom:8px;font-weight:500;}
+.field input{width:100%;background:var(--ink);border:1px solid rgba(148,163,184,.25);border-radius:10px;
+  padding:13px 14px;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:16px;}
+.field input:focus{outline:none;border-color:var(--cyan);}
+.field .hint{font-size:12px;color:var(--txt-inv-dim);opacity:.7;margin-top:5px;}
+
+.calc-result{background:linear-gradient(160deg, rgba(255,77,77,.14), rgba(0,175,239,.06));
+  border:1px solid rgba(255,77,77,.3);border-radius:18px;padding:28px;display:flex;flex-direction:column;justify-content:center;}
+.calc-result .rlabel{font-size:13px;letter-spacing:.06em;color:var(--txt-inv-dim);text-transform:uppercase;font-weight:600;}
+.calc-result .big{font-family:'IBM Plex Mono',monospace;font-size:clamp(30px,6vw,46px);font-weight:600;color:var(--red);
+  line-height:1.05;margin:8px 0;}
+.calc-result .big small{font-size:18px;opacity:.7;}
+.calc-result .sub2{font-size:14px;color:var(--txt-inv-dim);line-height:1.5;}
+.calc-result .year{margin-top:18px;padding-top:18px;border-top:1px solid rgba(148,163,184,.2);}
+.calc-result .year .yn{font-family:'IBM Plex Mono',monospace;font-size:24px;color:var(--gold);font-weight:600;}
+.calc-note{font-size:12.5px;color:var(--txt-inv-dim);margin-top:18px;opacity:.85;max-width:60ch;}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;}
+.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;position:relative;}
+.step .sn{font-family:'IBM Plex Mono',monospace;font-size:14px;color:#04121b;background:var(--cyan);
+  width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:600;margin-bottom:16px;}
+.step h3{font-size:18px;margin-bottom:8px;}
+.step p{font-size:14.5px;color:var(--txt-dim);line-height:1.55;}
+
+/* FEATURES */
+.feat-sec{background:var(--card);}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px;}
+.feat{border:1px solid var(--line);border-radius:14px;padding:22px;background:var(--paper);}
+.feat .ic{font-size:22px;margin-bottom:10px;}
+.feat h4{font-size:16px;margin-bottom:6px;}
+.feat p{font-size:14px;color:var(--txt-dim);line-height:1.5;}
+
+/* OFFER */
+.offer-sec{background:var(--ink);color:var(--txt-inv);}
+.offer-card{background:var(--ink-2);border:1px solid rgba(0,175,239,.35);border-radius:22px;
+  padding:38px;max-width:640px;margin:34px auto 0;text-align:center;position:relative;overflow:hidden;}
+.offer-card::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 200px at 50% 0,rgba(0,175,239,.18),transparent);pointer-events:none;}
+.offer-flag{display:inline-block;background:var(--gold);color:#3a2600;font-weight:700;font-size:12.5px;
+  letter-spacing:.06em;padding:7px 16px;border-radius:30px;text-transform:uppercase;}
+.countdown{display:flex;gap:12px;justify-content:center;margin:22px 0;}
+.cd{background:var(--ink);border:1px solid rgba(148,163,184,.2);border-radius:12px;padding:12px 16px;min-width:70px;}
+.cd .cdn{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;color:#fff;}
+.cd .cdl{font-size:11px;color:var(--txt-inv-dim);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;}
+.price{margin:20px 0 6px;}
+.price .old{color:var(--txt-inv-dim);text-decoration:line-through;font-size:18px;margin-right:10px;}
+.price .now{font-family:'IBM Plex Mono',monospace;font-size:40px;font-weight:600;color:var(--cyan);}
+.price .per{font-size:16px;color:var(--txt-inv-dim);}
+.offer-list{list-style:none;text-align:left;max-width:380px;margin:22px auto;display:grid;gap:10px;}
+.offer-list li{display:flex;gap:10px;font-size:15px;color:var(--txt-inv);align-items:flex-start;}
+.offer-list li::before{content:"✓";color:var(--green);font-weight:700;flex:0 0 auto;}
+.offer-card .btn{width:100%;max-width:380px;font-size:16px;padding:15px;}
+.offer-fine{font-size:12.5px;color:var(--txt-inv-dim);margin-top:14px;}
+.lead-form{display:grid;gap:10px;max-width:380px;margin:20px auto 0;}
+.lead-form input,.lead-form select{width:100%;background:var(--ink);border:1px solid rgba(148,163,184,.3);
+  border-radius:10px;padding:13px 14px;color:#fff;font-family:inherit;font-size:15px;}
+.lead-form input:focus,.lead-form select:focus{outline:none;border-color:var(--cyan);}
+.lead-form select{color:var(--txt-inv-dim);}
+.lead-form .btn{width:100%;font-size:16px;padding:15px;margin-top:4px;}
+.lead-ok{max-width:380px;margin:20px auto 0;background:rgba(47,191,113,.15);border:1px solid var(--green);
+  color:#bff3d4;border-radius:12px;padding:18px;font-size:15px;font-weight:500;}
+.tg-link{display:inline-block;margin-top:14px;color:var(--cyan);font-size:14.5px;font-weight:500;}
+.tg-link:hover{text-decoration:underline;}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--txt-inv-dim);border-top:1px solid rgba(148,163,184,.14);padding:34px 0;font-size:14px;}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+
+@media(max-width:860px){
+  .stat-row,.calc-grid,.steps,.feats{grid-template-columns:1fr;}
+  .feats{grid-template-columns:1fr 1fr;}
+  section{padding:48px 0;}
+}
+@media(max-width:560px){ .feats{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="dot"></span> ECOMAUDIT · TRENAJYOR</div>
+    <a class="btn btn-cyan btn-nav" href="#taklif">Bepul demo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">Sotuv jamoasi uchun AI-trenajyor</span>
+    <h1>Zaif sotuvchi har oy <span class="hl">pulingizni oqizadi</span>.</h1>
+    <p class="lead">Sotuvchilaringizni jonli AI-mijozda mashq qildiring. Real e'tirozlar, 9 bosqichli metodika, har gapga jonli baho va oxirida to'liq razbor — hech qanday real mijozni yo'qotmasdan.</p>
+    <div class="hero-cta">
+      <a class="btn btn-cyan" href="#taklif">Telegram orqali boshlash →</a>
+      <a class="btn btn-ghost" href="#hisob">Qancha yo'qotyapman?</a>
+    </div>
+    <div class="hero-trust">🔒 <b>&nbsp;B2B · B2C · B2G</b>&nbsp; segmentlariga moslashadi</div>
+  </div>
+</header>
+
+<!-- PROBLEM -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Muammo</div>
+    <h2>Lidlar keladi — lekin sotuvchi ularni "yopolmaydi"</h2>
+    <p class="section-sub">Reklamaga sarflagan har so'mingiz sotuvchining og'zida hal bo'ladi. Tayyorlanmagan sotuvchi savolga javob bermaydi, narxni sababsiz tushiradi, "olasizmi?" deb yopadi — va mijoz "o'ylab ko'raman" deb ketadi.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="n red">68%</div><div class="t">Lidlar sotuvchi xatosi tufayli bitimga aylanmay yo'qoladi</div></div>
+      <div class="stat"><div class="n cyan">+30%</div><div class="t">Tizimli mashq qilgan jamoada konversiyaning o'sishi</div></div>
+      <div class="stat"><div class="n">9</div><div class="t">Bosqich — salomlashishdan yopishgacha, har biri baholanadi</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calc-sec" id="hisob">
+  <div class="wrap">
+    <div class="eyebrow">Hisob-kitob</div>
+    <h2>Siz har oy qancha pul yo'qotyapsiz?</h2>
+    <p class="section-sub" style="color:var(--txt-inv-dim)">Raqamlarni kiriting — tayyorlanmagan sotuvchi tufayli oyiga va yiliga qancha daromaddan mahrum bo'layotganingizni ko'rsatamiz.</p>
+
+    <div class="calc-grid">
+      <div class="calc-inputs">
+        <div class="field">
+          <label>Oyiga nechta lid / murojaat keladi?</label>
+          <input id="leads" type="number" value="100" min="0" />
+        </div>
+        <div class="field">
+          <label>O'rtacha bitim summasi (so'm)</label>
+          <input id="deal" type="number" value="3000000" min="0" />
+          <div class="hint">Bitta mijoz o'rtacha qancha xarid qiladi</div>
+        </div>
+        <div class="field">
+          <label>Hozirgi konversiya (%) — lidning necha foizi sotib oladi</label>
+          <input id="rate" type="number" value="15" min="0" max="100" />
+        </div>
+      </div>
+
+      <div class="calc-result">
+        <div class="rlabel">Har oy yo'qotilayotgan daromad</div>
+        <div class="big" id="loseMonth">— so'm</div>
+        <div class="sub2" id="loseExplain">Tayyorlangan jamoa konversiyani ~30% oshiradi.</div>
+        <div class="year">
+          <div class="rlabel">Yiliga</div>
+          <div class="yn" id="loseYear">— so'm</div>
+        </div>
+      </div>
+    </div>
+    <p class="calc-note">* Hisob taxminiy: trening bilan konversiyaning ~30% nisbiy o'sishi taxmin qilingan (sanoat o'rtachasi). Sizning natijangiz jamoa va nishaga qarab farq qilishi mumkin. Trenajyor narxi bu yo'qotishning kichik bir ulushidir.</p>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Qanday ishlaydi</div>
+    <h2>Uch qadamda jonli mashq</h2>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><h3>Segmentni tanlang</h3><p>B2B, B2C yoki B2G — kerakli mahsulotni bosing. AI darrov o'sha nishaga mos jonli mijozga aylanadi (ism, oborot, e'tirozlar — har safar boshqacha).</p></div>
+      <div class="step"><div class="sn">2</div><h3>Suhbatni o'tkazing</h3><p>Sotuvchi mijoz bilan 9 bosqich bo'ylab gaplashadi. Mijoz ma'lumotni birdan bermaydi, e'tiroz bildiradi, raqam xatosini ushlaydi — xuddi haqiqiy.</p></div>
+      <div class="step"><div class="sn">3</div><h3>Razborni oling</h3><p>Har gap 0–10 baholanadi, qizil bayroqlar (sababsiz narx, javobsiz savol...) chiqadi, oxirida bosqichma-bosqich to'liq tahlil beriladi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="feat-sec">
+  <div class="wrap">
+    <div class="eyebrow">Nima olasiz</div>
+    <h2>Bitta trenajyor — butun sotuv tizimi</h2>
+    <div class="feats">
+      <div class="feat"><div class="ic">🎯</div><h4>9 bosqichli metodika</h4><p>Salomlashishdan yopishgacha strukturaviy sotuv skeleti.</p></div>
+      <div class="feat"><div class="ic">📊</div><h4>Jonli baholash</h4><p>Har xabardan keyin ball va aniq maslahat.</p></div>
+      <div class="feat"><div class="ic">🚩</div><h4>Qizil bayroqlar</h4><p>Sababsiz narx, javobsiz savol, "olasizmi?" — avtomatik ushlanadi.</p></div>
+      <div class="feat"><div class="ic">🎲</div><h4>B2B · B2C · B2G</h4><p>Har segment va mahsulot uchun cheksiz tasodifiy mijozlar.</p></div>
+      <div class="feat"><div class="ic">💡</div><h4>Yordam rejimi</h4><p>Yangi sotuvchilarga vaziyat uchun tayyor formulirovkalar.</p></div>
+      <div class="feat"><div class="ic">📝</div><h4>To'liq razbor</h4><p>Suhbat oxirida kuchli/zaif tomonlar va umumiy baho.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section class="offer-sec" id="taklif">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--gold)">Cheklangan taklif</div>
+    <h2 style="color:#fff">Ishga tushirish narxi — faqat shu hafta</h2>
+    <div class="offer-card">
+      <span class="offer-flag">🔥 Ishga tushirish chegirmasi</span>
+      <div class="countdown" id="countdown">
+        <div class="cd"><div class="cdn" id="cdD">0</div><div class="cdl">kun</div></div>
+        <div class="cd"><div class="cdn" id="cdH">0</div><div class="cdl">soat</div></div>
+        <div class="cd"><div class="cdn" id="cdM">0</div><div class="cdl">daqiqa</div></div>
+        <div class="cd"><div class="cdn" id="cdS">0</div><div class="cdl">soniya</div></div>
+      </div>
+      <div class="price">
+        <span class="old">399 000</span>
+        <span class="now">199 000</span>
+        <span class="per">so'm / oy</span>
+      </div>
+      <ul class="offer-list">
+        <li>Cheksiz mashq suhbatlari</li>
+        <li>Butun jamoa uchun bitta obuna</li>
+        <li>B2B / B2C / B2G segmentlari</li>
+        <li>Jonli baholash va to'liq razbor</li>
+      </ul>
+      <form id="leadForm" class="lead-form" onsubmit="return leadYubor(event)">
+        <input id="ism" type="text" placeholder="Ismingiz" required />
+        <input id="telefon" type="tel" placeholder="Telefon (+998...)" required />
+        <select id="biznes">
+          <option value="">Biznes turi (ixtiyoriy)</option>
+          <option>B2B</option>
+          <option>B2C</option>
+          <option>B2G</option>
+          <option>Boshqa</option>
+        </select>
+        <button class="btn btn-cyan" type="submit">Bepul demo olish →</button>
+      </form>
+      <div id="leadOk" class="lead-ok" style="display:none">✓ Rahmat! Tez orada siz bilan bog'lanamiz.</div>
+      <a class="tg-link" href="https://t.me/ecomaudit_bot" target="_blank" rel="noopener">yoki Telegram'da yozing →</a>
+      <div class="offer-fine">Hech qanday oldindan to'lov shart emas.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="color:var(--txt-inv)"><span class="dot"></span> ECOMAUDIT</div>
+    <div>© 2026 EcomAudit · Sotuv Trenajyori &nbsp;·&nbsp; <a href="https://t.me/ecomaudit_bot" style="color:var(--cyan)">Telegram</a></div>
+  </div>
+</footer>
+
+<script>
+// ----- YO'QOTISH HISOBLAGICHI -----
+var UPLIFT = 0.30; // trening bilan konversiyaning nisbiy o'sishi (30%)
+function sonFormat(n){
+  n = Math.round(n);
+  return n.toLocaleString('ru-RU').replace(/\u00A0/g,' ');
+}
+function hisobla(){
+  var leads = parseFloat(document.getElementById('leads').value) || 0;
+  var deal  = parseFloat(document.getElementById('deal').value) || 0;
+  var rate  = parseFloat(document.getElementById('rate').value) || 0;
+  rate = Math.max(0, Math.min(100, rate));
+
+  var hozirgi = leads * (rate/100) * deal;
+  var yangiRate = Math.min(100, rate * (1 + UPLIFT));
+  var yangi = leads * (yangiRate/100) * deal;
+  var oyliqYoqotish = Math.max(0, yangi - hozirgi);
+
+  document.getElementById('loseMonth').innerHTML = sonFormat(oyliqYoqotish) + ' <small>so\'m</small>';
+  document.getElementById('loseYear').textContent = sonFormat(oyliqYoqotish * 12) + " so'm";
+  document.getElementById('loseExplain').textContent =
+    "Konversiya " + rate.toFixed(0) + "% dan ~" + yangiRate.toFixed(0) + "% ga ko'tarilsa, shuncha qo'shimcha daromad qo'lга kiradi.";
+}
+['leads','deal','rate'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', hisobla);
+});
+hisobla();
+
+// ----- SANOQ (bu hafta oxirigacha) -----
+function keyingiDeadline(){
+  var now = new Date();
+  var d = new Date(now);
+  var kunlar = (7 - now.getDay()) % 7; // yakshanba oxiri
+  d.setDate(now.getDate() + (kunlar === 0 ? 7 : kunlar));
+  d.setHours(23,59,59,0);
+  return d;
+}
+var deadline = keyingiDeadline();
+function tick(){
+  var diff = Math.max(0, deadline - new Date());
+  var s = Math.floor(diff/1000);
+  var dd = Math.floor(s/86400); s%=86400;
+  var hh = Math.floor(s/3600); s%=3600;
+  var mm = Math.floor(s/60); var ss = s%60;
+  document.getElementById('cdD').textContent = dd;
+  document.getElementById('cdH').textContent = ('0'+hh).slice(-2);
+  document.getElementById('cdM').textContent = ('0'+mm).slice(-2);
+  document.getElementById('cdS').textContent = ('0'+ss).slice(-2);
+}
+tick(); setInterval(tick, 1000);
+
+// ----- LID FORMASI -----
+async function leadYubor(e){
+  e.preventDefault();
+  var ism = document.getElementById('ism').value.trim();
+  var telefon = document.getElementById('telefon').value.trim();
+  var biznes = document.getElementById('biznes').value;
+  if(!ism || !telefon) return false;
+  var btn = e.target.querySelector('button');
+  btn.disabled = true; btn.textContent = 'Yuborilyapti...';
+  try{
+    await fetch('/api/lead', {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({ ism: ism, telefon: telefon, biznes: biznes })
+    });
+  }catch(err){}
+  document.getElementById('leadForm').style.display = 'none';
+  document.getElementById('leadOk').style.display = 'block';
+  return false;
+}
+</script>
+</body>
+</html>
